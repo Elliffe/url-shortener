@@ -30,9 +30,9 @@ public class UrlController {
     }
 
     @PostMapping
-    public Map<String, String> insertUrl(@RequestBody Url url) {
-        Url shortenedUrl = urlService.insertUrl(url);
-        String shortUrl = hostname.concat("/").concat(shorteningService.encodeUrl(url.getUrl()));
+    public Map<String, String> insertUrl(@RequestBody Url request) {
+        Url url = urlService.insertUrl(request);
+        String shortUrl = hostname.concat("/").concat(shorteningService.encodeUrl(url));
 
         HashMap<String, String> map = new HashMap<>();
         map.put("long", url.getUrl().toString());

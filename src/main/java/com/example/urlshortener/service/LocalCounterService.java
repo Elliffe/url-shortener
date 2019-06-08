@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 @Repository("local")
 public class LocalCounterService implements CounterService {
 
-    private static int counter = 0;
+    private static long counter = 0;
 
     @Override
-    public int getCounter() {
+    public long getCounter() {
         counter++;
         return counter;
     }

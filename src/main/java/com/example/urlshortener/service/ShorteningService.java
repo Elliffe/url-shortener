@@ -1,9 +1,9 @@
 package com.example.urlshortener.service;
 
-import java.net.URI;
+import com.example.urlshortener.model.Url;
 
 public interface ShorteningService {
 
-    String encodeUrl(URI longUrl);
-    String decodeUrl(URI longUrl);
+    String encodeUrl(Url url);
+    long decodeId(String encodedId);
 }

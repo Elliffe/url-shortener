@@ -6,15 +6,19 @@ import java.net.URI;
 
 public class Url {
 
-    private final int id;
+    private final long id;
     private final URI url;
 
-    public Url(int id, @JsonProperty("url") URI url) {
-        this.id = id;
+    public Url(@JsonProperty("id") long id, @JsonProperty("url") URI url) {
         this.url = url;
+        this.id = id;
     }
 
     public URI getUrl() {
         return url;
+    }
+
+    public long getId() {
+        return id;
     }
 }

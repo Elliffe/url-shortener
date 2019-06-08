@@ -5,4 +5,5 @@ import com.example.urlshortener.model.Url;
 public interface UrlDao {
 
     Url insertUrl(Url url);
+    Url getUrl(long id);
 }

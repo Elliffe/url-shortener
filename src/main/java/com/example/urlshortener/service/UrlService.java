@@ -19,4 +19,8 @@ public class UrlService {
     public Url insertUrl(Url url) {
         return urlDao.insertUrl(url);
     }
+
+    public Url getUrl(long id) {
+        return urlDao.getUrl(id);
+    }
 }
