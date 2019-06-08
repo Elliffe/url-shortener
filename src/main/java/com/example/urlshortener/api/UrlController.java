@@ -6,10 +6,8 @@ import com.example.urlshortener.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,5 +36,12 @@ public class UrlController {
         map.put("long", url.getUrl().toString());
         map.put("short", shortUrl);
         return map;
+    }
+
+    @GetMapping(path = "{id}")
+    public ModelAndView method(@PathVariable("id") String id) {
+        long urlId = shorteningService.decodeId(id);
+        Url fullUrl = urlService.getUrl(urlId);
+        return new ModelAndView("redirect:" + fullUrl.getUrl());
     }
 }
