@@ -15,7 +15,7 @@ public class ArrayListUrlDao implements UrlDao {
     private static List<Url> DB = new ArrayList<>();
     private final CounterService counterService;
 
-    public ArrayListUrlDao(@Qualifier("local") CounterService counterService) {
+    public ArrayListUrlDao(@Qualifier("mongoCounterService") CounterService counterService) {
         this.counterService = counterService;
     }
 
