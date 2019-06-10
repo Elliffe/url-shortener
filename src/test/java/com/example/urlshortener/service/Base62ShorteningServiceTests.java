@@ -1,7 +1,6 @@
-package com.example.urlshortener.Service;
+package com.example.urlshortener.service;
 
 import com.example.urlshortener.model.Url;
-import com.example.urlshortener.service.Base62ShorteningService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
