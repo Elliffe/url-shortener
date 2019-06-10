@@ -1,8 +1,30 @@
 package com.example.urlshortener.model;
 
-public interface IdRange {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    long getStartOfRange();
+@Document("idRange")
+public class IdRange {
 
-    long getEndOfRange();
+    @Id
+    private String id;
+
+    @Indexed(unique = true)
+    private long startOfRange;
+    @Indexed(unique = true)
+    private long endOfRange;
+
+    public IdRange(long startOfRange, long endOfRange) {
+        this.startOfRange = startOfRange;
+        this.endOfRange = endOfRange;
+    }
+
+    public long getStartOfRange() {
+        return startOfRange;
+    }
+
+    public long getEndOfRange() {
+        return endOfRange;
+    }
 }

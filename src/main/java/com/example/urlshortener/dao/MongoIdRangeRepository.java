@@ -1,9 +1,9 @@
 package com.example.urlshortener.dao;
 
-import com.example.urlshortener.model.IdRangeMongo;
+import com.example.urlshortener.model.IdRange;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface MongoIdRangeRepository extends MongoRepository<IdRangeMongo, String> {
+public interface MongoIdRangeRepository extends MongoRepository<IdRange, String> {
 
-    IdRangeMongo findTopByOrderByIdDesc();
+    IdRange findTopByOrderByIdDesc();
 }
