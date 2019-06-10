@@ -12,7 +12,7 @@ public class UrlService {
     private final UrlDao urlDao;
 
     @Autowired
-    public UrlService(@Qualifier("ArrayListDao") UrlDao urlDao) {
+    public UrlService(@Qualifier("MongoUrlDao") UrlDao urlDao) {
         this.urlDao = urlDao;
     }
 
