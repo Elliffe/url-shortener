@@ -13,17 +13,12 @@ public class Base62ShorteningService implements ShorteningService {
         long id = url.getId();
         StringBuilder sb = new StringBuilder();
 
-        do{
+        do {
             long rem = id % 62;
             sb.append(BASE62.charAt((int)rem));
             id /= 62;
-        }while(id != 0);
+        } while(id != 0);
 
-//        while (id != 0) {
-//            long rem = id % 62;
-//            sb.append(BASE62.charAt((int)rem));
-//            id /= 62;
-//        }
         return sb.reverse().toString();
 
     }
