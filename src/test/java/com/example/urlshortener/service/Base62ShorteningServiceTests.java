@@ -8,18 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.URI;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class Base62ShorteningServiceTests {
 
     @Autowired
     private Base62ShorteningService base62ShorteningService;
+    private String uri = "http://www.example.com";
 
     @Test
     public void testEncodeUrl() {
-        URI uri = URI.create("http://www.example.com");
         Url url = new Url(1, uri);
         String encodedUrl = base62ShorteningService.encodeUrl(url);
         Assert.assertEquals("b", encodedUrl);
@@ -27,7 +25,6 @@ public class Base62ShorteningServiceTests {
 
     @Test
     public void testEncodeUrlIntegerOverflow() {
-        URI uri = URI.create("http://www.example.com");
         Url url = new Url(2147483648L, uri);
         String encodedUrl = base62ShorteningService.encodeUrl(url);
         Assert.assertEquals("cvuMLc", encodedUrl);
@@ -35,7 +32,6 @@ public class Base62ShorteningServiceTests {
 
     @Test
     public void testEncodeUrlLongLimit() {
-        URI uri = URI.create("http://www.example.com");
         Url url = new Url(9223372036854775807L, uri);
         String encodedUrl = base62ShorteningService.encodeUrl(url);
         Assert.assertEquals("k9viXaIfiWh", encodedUrl);

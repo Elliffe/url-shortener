@@ -1,6 +1,8 @@
 package com.example.urlshortener.service;
 
+import com.example.urlshortener.dao.MongoIdRangeRepository;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,15 @@ public class CounterServiceTests {
     @Autowired
     private CounterService counterService;
 
+
+    @Autowired
+    private MongoIdRangeRepository mongoIdRangeRepository;
+
+    @Before
+    public void tearDown() {
+        mongoIdRangeRepository.deleteAll();
+    }
+
     @Test
     public void testCounterIncrement() {
         Field counterField = ReflectionUtils.findField(counterService.getClass(), "counter");
@@ -36,6 +47,7 @@ public class CounterServiceTests {
 
     @Test
     public void testCounterIncrementUpperLimit() {
+        counterService.getNewRange();
         long upperRangeLimit = rangeSize - 1;
         Field counterField = ReflectionUtils.findField(counterService.getClass(), "counter");
         assert counterField != null;
