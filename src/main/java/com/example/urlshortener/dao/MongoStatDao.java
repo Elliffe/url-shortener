@@ -23,13 +23,19 @@ public class MongoStatDao implements StatDao {
     }
 
     @Override
-    public void insertStat(Stat stat) {
-        mongoStatRepository.save(stat);
+    public boolean insertStat(Stat stat) {
+        try {
+            mongoStatRepository.save(stat);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     @Override
     public Object getStats(Url url) {
-        String originalUrlString = url.getUrl().toString();
+        String originalUrlString = url.getUrl();
         int total = mongoStatRepository.findByUrlId(url.getId()).size();
         int week = getStatsForLastXDays(url.getId(), 7);
         int month = getStatsForLastXDays(url.getId(), 30);

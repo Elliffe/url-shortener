@@ -5,6 +5,6 @@ import com.example.urlshortener.model.Url;
 
 public interface StatDao {
 
-    void insertStat(Stat stat);
+    boolean insertStat(Stat stat);
     Object getStats(Url url);
 }
