@@ -1,6 +1,8 @@
 package com.example.urlshortener.api;
 
+import com.example.urlshortener.dao.MongoUrlRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,13 @@ public class UrlControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private MongoUrlRepository mongoUrlRepository;
+
+    @After
+    public void tearDown() {
+        mongoUrlRepository.deleteAll();
+    }
 
     @Test
     public void shouldReturnShortUrls() throws Exception {
@@ -36,7 +45,7 @@ public class UrlControllerTests {
 
 
         MvcResult result = this.mockMvc.perform(
-            post("/")
+            post("/api/v1/shorten")
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isOk())
@@ -46,7 +55,7 @@ public class UrlControllerTests {
         Assert.assertEquals(body, "http://localhost:8080/a");
 
         result = this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -68,7 +77,7 @@ public class UrlControllerTests {
 
 
         MvcResult result = this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -98,7 +107,7 @@ public class UrlControllerTests {
 
 
         result = this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -129,7 +138,7 @@ public class UrlControllerTests {
 
 
         this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().is(400))
@@ -145,7 +154,7 @@ public class UrlControllerTests {
 
 
         this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().is(400))
@@ -161,7 +170,26 @@ public class UrlControllerTests {
 
 
         this.mockMvc.perform(
-                post("/")
+                post("/api/v1/shorten")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().is(400))
+                .andReturn();
+    }
+
+    @Test
+    public void shouldRejectInvalidUrl() throws Exception {
+        // Test for character "{"
+        Object obj = new Object() {
+            public final String url = "example.com";
+        };
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(obj);
+
+
+        this.mockMvc.perform(
+                post("/api/v1/shorten")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().is(400))
