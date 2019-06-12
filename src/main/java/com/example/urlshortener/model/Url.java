@@ -4,21 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.net.URI;
-
 @Document()
 public class Url {
 
     @Id
     private final long id;
-    private final URI url;
+    private final String url;
 
-    public Url(@JsonProperty("id") long id, @JsonProperty("url") URI url) {
+    public Url(@JsonProperty("id") long id, @JsonProperty("url") String url) {
         this.url = url;
         this.id = id;
     }
 
-    public URI getUrl() {
+    public String getUrl() {
         return url;
     }
 

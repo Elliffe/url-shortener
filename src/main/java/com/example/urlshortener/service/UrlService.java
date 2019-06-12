@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
+
 @Service
 public class UrlService {
 
@@ -16,11 +18,31 @@ public class UrlService {
         this.urlDao = urlDao;
     }
 
-    public Url insertUrl(Url url) {
-        return urlDao.insertUrl(url);
+    public boolean insertUrl(Url url) {
+        if(isValidUrl(url.getUrl())) {
+            return urlDao.insertUrl(url);
+        } else {
+            return false;
+        }
     }
 
     public Url getUrl(long id) {
         return urlDao.getUrl(id);
+    }
+
+    /* Returns true if url is valid */
+    private static boolean isValidUrl(String url)
+    {
+        /* Try creating a valid URL */
+        try {
+            new URL(url).toURI();
+            return true;
+        }
+
+        // If there was an Exception
+        // while creating URL object
+        catch (Exception e) {
+            return false;
+        }
     }
 }

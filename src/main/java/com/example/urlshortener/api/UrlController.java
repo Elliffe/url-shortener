@@ -38,10 +38,14 @@ public class UrlController {
     @ResponseBody
     public ResponseEntity<String> insertUrl(@RequestBody Url request, @RequestHeader HttpHeaders headers, HttpServletResponse response) {
         Long id = counterService.getCounter();
-        if(id == null) { return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE); }
+        if(id == null) {
+            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+        }
 
         Url url = new Url(id, request.getUrl());
-        urlService.insertUrl(url);
+        if(!urlService.insertUrl(url)) {
+            return new ResponseEntity<>("Invalid URL", HttpStatus.BAD_REQUEST);
+        }
         String shortUrl = hostname.concat("/").concat(shorteningService.encodeUrl(url));
 
         return new ResponseEntity<>(shortUrl, HttpStatus.OK);
