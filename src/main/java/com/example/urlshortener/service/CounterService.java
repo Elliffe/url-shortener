@@ -20,12 +20,21 @@ public class CounterService {
 
     public Long getCounter() {
         if(idRange == null) { return null; }
+
         if(counter == idRange.getEndOfRange() || counter < 0) {
-            idRange = idRangeDao.getIdRange();
-            if(idRange == null) { return null; }
-            counter = idRange.getStartOfRange();
+            try {
+                getNewRange();
+            } catch (Exception e) {
+                return null;
+            }
         }
+
         return counter++;
+    }
+
+    public void getNewRange() {
+        idRange = idRangeDao.getIdRange();
+        counter = idRange.getStartOfRange();
     }
 
     private void checkRangeLimitReached() {
