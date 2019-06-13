@@ -13,6 +13,7 @@ public class Base62ShorteningService implements ShorteningService {
         long id = url.getId();
         StringBuilder sb = new StringBuilder();
 
+        // Use do-while to prevent zeroth ID returning an empty String
         do {
             long rem = id % 62;
             sb.append(BASE62.charAt((int)rem));

@@ -38,6 +38,9 @@ mvnw install dockerfile:build
 docker-compose up
 ```
 
+##### On Windows
+If running on Windows it may be necessary to enable the option to `Expose daemon on tcp://localhost:2375 without TLS` within Docker settings
+
 ---
 ##### **Environment Variables**
 There are 3 environment variables used by the system:

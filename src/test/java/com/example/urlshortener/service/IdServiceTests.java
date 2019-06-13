@@ -15,12 +15,12 @@ import java.lang.reflect.Field;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CounterServiceTests {
+public class IdServiceTests {
     @Value("${RANGE_SIZE}")
     private int rangeSize;
 
     @Autowired
-    private CounterService counterService;
+    private IdService idService;
 
 
     @Autowired
@@ -33,28 +33,28 @@ public class CounterServiceTests {
 
     @Test
     public void testCounterIncrement() {
-        Field counterField = ReflectionUtils.findField(counterService.getClass(), "counter");
+        Field counterField = ReflectionUtils.findField(idService.getClass(), "counter");
         assert counterField != null;
         ReflectionUtils.makeAccessible(counterField);
-        ReflectionUtils.setField(counterField, counterService, 0);
+        ReflectionUtils.setField(counterField, idService, 0);
 
-        long counter = counterService.getCounter();
+        long counter = idService.getId();
         Assert.assertEquals(0, counter);
 
-        long counter2 = counterService.getCounter();
+        long counter2 = idService.getId();
         Assert.assertEquals(1, counter2);
     }
 
     @Test
     public void testCounterIncrementUpperLimit() {
-        counterService.getNewRange();
+        idService.getNewRange();
         long upperRangeLimit = rangeSize - 1;
-        Field counterField = ReflectionUtils.findField(counterService.getClass(), "counter");
+        Field counterField = ReflectionUtils.findField(idService.getClass(), "counter");
         assert counterField != null;
         ReflectionUtils.makeAccessible(counterField);
-        ReflectionUtils.setField(counterField, counterService, upperRangeLimit);
+        ReflectionUtils.setField(counterField, idService, upperRangeLimit);
 
-        long counter = counterService.getCounter();
+        long counter = idService.getId();
         Assert.assertEquals(upperRangeLimit + 1, counter);
     }
 }

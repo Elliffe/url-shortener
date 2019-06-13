@@ -30,10 +30,13 @@ public class StatsController {
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<Object> method(@PathVariable("id") String id) {
-        long urlId = shorteningService.decodeId(id);
-        Url fullUrl = urlService.getUrl(urlId);
-        if(fullUrl == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID Not Found"); }
+    public ResponseEntity<Object> method(@PathVariable("id") String longId) {
+        long shortId = shorteningService.decodeId(longId);
+        Url fullUrl = urlService.getUrl(shortId);
+
+        if(fullUrl == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID Not Found");
+        }
 
         return new ResponseEntity<>(statService.getStats(fullUrl), HttpStatus.OK);
     }

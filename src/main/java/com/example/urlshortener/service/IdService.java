@@ -6,22 +6,29 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CounterService {
+public class IdService {
 
-    private static long counter = -1;
+    private static long counter;
     private static IdRange idRange;
     private final IdRangeDao idRangeDao;
 
-    public CounterService(@Qualifier("MongoIdRangeDao") IdRangeDao idRangeDao) {
+    public IdService(@Qualifier("MongoIdRangeDao") IdRangeDao idRangeDao) {
         this.idRangeDao = idRangeDao;
         idRange = idRangeDao.getIdRange();
         if(idRange != null) { counter = idRange.getStartOfRange(); }
     }
 
-    public Long getCounter() {
-        if(idRange == null) { return null; }
+    public Long getId() {
+        // If the IdRange is null then attempt to get a new range. If the new range is null also
+        // then there is likely an issue with the DB, send the client a 503
+        if(idRange == null) {
+            getNewRange();
+        }
+        if(idRange == null) {
+            return null;
+        }
 
-        if(counter == idRange.getEndOfRange() || counter < 0) {
+        if(counter == idRange.getEndOfRange()) {
             try {
                 getNewRange();
             } catch (Exception e) {
@@ -35,12 +42,5 @@ public class CounterService {
     public void getNewRange() {
         idRange = idRangeDao.getIdRange();
         counter = idRange.getStartOfRange();
-    }
-
-    private void checkRangeLimitReached() {
-        if(counter == idRange.getEndOfRange() || counter < 0) {
-            idRange = idRangeDao.getIdRange();
-            counter = idRange.getStartOfRange();
-        }
     }
 }

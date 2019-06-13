@@ -30,8 +30,8 @@ public class UrlControllerTests {
     @Autowired
     private MongoUrlRepository mongoUrlRepository;
 
-    @Value("${HOST}")
-    private String HOST;
+    @Value("${BASE_URL}")
+    private String BASE_URL;
 
     @After
     public void tearDown() {
@@ -56,7 +56,7 @@ public class UrlControllerTests {
             .andReturn();
 
         String body = result.getResponse().getContentAsString();
-        Assert.assertEquals(body, HOST + "/a");
+        Assert.assertEquals(body, BASE_URL + "/a");
 
         result = this.mockMvc.perform(
                 post("/api/v1/shorten")
@@ -66,7 +66,7 @@ public class UrlControllerTests {
                 .andReturn();
 
         body = result.getResponse().getContentAsString();
-        Assert.assertEquals(body, HOST + "/b");
+        Assert.assertEquals(body, BASE_URL + "/b");
     }
 
     @Test

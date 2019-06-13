@@ -1,7 +1,7 @@
 package com.example.urlshortener.dao;
 
 import com.example.urlshortener.model.Url;
-import com.example.urlshortener.service.CounterService;
+import com.example.urlshortener.service.IdService;
 import com.mongodb.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 public class MongoUrlDao implements UrlDao {
 
     private final MongoUrlRepository mongoUrlRepository;
-    private final CounterService counterService;
+    private final IdService idService;
 
-    public MongoUrlDao(MongoUrlRepository mongoUrlRepository, CounterService counterService) {
+    public MongoUrlDao(MongoUrlRepository mongoUrlRepository, IdService idService) {
         this.mongoUrlRepository = mongoUrlRepository;
-        this.counterService = counterService;
+        this.idService = idService;
     }
 
     @Override
@@ -22,9 +22,9 @@ public class MongoUrlDao implements UrlDao {
             mongoUrlRepository.save(url);
             return true;
         } catch (DuplicateKeyException e) {
-            // There should never be a situation where a duplicate id is inserted as the IdRange Dao is handling this,
+            // There should never be a situation where a duplicate id is inserted as the IdRange Service is handling this,
             // however; if it does happen, get a new range to prevent subsequent inserts within the current range failing.
-            counterService.getNewRange();
+            idService.getNewRange();
             return false;
         } catch (Exception e) {
             return false;

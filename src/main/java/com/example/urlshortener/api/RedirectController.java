@@ -32,10 +32,13 @@ public class RedirectController {
     }
 
     @GetMapping(path = "{id}")
-    public ModelAndView method(@PathVariable("id") String id) {
-        long urlId = shorteningService.decodeId(id);
-        Url fullUrl = urlService.getUrl(urlId);
-        if(fullUrl == null) { throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL Not Found"); }
+    public ModelAndView method(@PathVariable("id") String longId) {
+        long shortId = shorteningService.decodeId(longId);
+        Url fullUrl = urlService.getUrl(shortId);
+
+        if(fullUrl == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "URL Not Found");
+        }
 
         Stat stat = new Stat(fullUrl.getId());
         statService.insertStat(stat);

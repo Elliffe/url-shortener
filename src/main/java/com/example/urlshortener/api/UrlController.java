@@ -1,7 +1,7 @@
 package com.example.urlshortener.api;
 
 import com.example.urlshortener.model.Url;
-import com.example.urlshortener.service.CounterService;
+import com.example.urlshortener.service.IdService;
 import com.example.urlshortener.service.ShorteningService;
 import com.example.urlshortener.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,34 +19,38 @@ import javax.servlet.http.HttpServletResponse;
 public class UrlController {
 
     private final ShorteningService shorteningService;
-    private final CounterService counterService;
+    private final IdService idService;
     private final UrlService urlService;
 
-    @Value("${HOST}")
-    private String HOST;
+    @Value("${BASE_URL}")
+    private String BASE_URL;
 
     @Autowired
     public UrlController(@Qualifier("Base62") ShorteningService shorteningService,
-                         CounterService counterService,
+                         IdService idService,
                          UrlService urlService) {
         this.shorteningService = shorteningService;
-        this.counterService = counterService;
+        this.idService = idService;
         this.urlService = urlService;
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<String> insertUrl(@RequestBody Url request, @RequestHeader HttpHeaders headers, HttpServletResponse response) {
-        Long id = counterService.getCounter();
+    public ResponseEntity<String> insertUrl(@RequestBody Url request) {
+        Long id = idService.getId();
         if(id == null) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
 
         Url url = new Url(id, request.getUrl());
+
+        // If the URL insert fails the URL was likely invalid
         if(!urlService.insertUrl(url)) {
             return new ResponseEntity<>("Invalid URL", HttpStatus.BAD_REQUEST);
         }
-        String shortUrl = HOST.concat("/").concat(shorteningService.encodeUrl(url));
+
+        // Append the Base62 encoded ID to the BASE_URL
+        String shortUrl = BASE_URL.concat("/").concat(shorteningService.encodeUrl(url));
 
         return new ResponseEntity<>(shortUrl, HttpStatus.OK);
     }
