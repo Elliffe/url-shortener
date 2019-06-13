@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    environment:
+      - HOST=http://localhost:8080
+      - spring.data.mongodb.uri=mongodb://mongo:27017/url-shortener
+      - RANGE_SIZE=1000
+
+  mongo:
+    image: mongo
