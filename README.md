@@ -34,7 +34,7 @@ The response to this request is in the format:
 ##### **Running**
 To build and run the application and a MongoDB instance:
 ```$xslt
-./mvnw install dockerfile:build
+mvnw install dockerfile:build
 docker-compose up
 ```
 
