@@ -22,8 +22,8 @@ public class UrlController {
     private final CounterService counterService;
     private final UrlService urlService;
 
-    @Value("${hostname}")
-    private String hostname;
+    @Value("${HOST}")
+    private String HOST;
 
     @Autowired
     public UrlController(@Qualifier("Base62") ShorteningService shorteningService,
@@ -46,7 +46,7 @@ public class UrlController {
         if(!urlService.insertUrl(url)) {
             return new ResponseEntity<>("Invalid URL", HttpStatus.BAD_REQUEST);
         }
-        String shortUrl = hostname.concat("/").concat(shorteningService.encodeUrl(url));
+        String shortUrl = HOST.concat("/").concat(shorteningService.encodeUrl(url));
 
         return new ResponseEntity<>(shortUrl, HttpStatus.OK);
     }

@@ -10,7 +10,7 @@ public class MongoIdRangeDao implements IdRangeDao {
     private final MongoIdRangeRepository mongoIdRangeRepository;
     private int rangeSize;
 
-    public MongoIdRangeDao(MongoIdRangeRepository mongoIdRangeRepository, @Value("${rangeSize}") final int rangeSize) {
+    public MongoIdRangeDao(MongoIdRangeRepository mongoIdRangeRepository, @Value("${RANGE_SIZE}") final int rangeSize) {
         this.mongoIdRangeRepository = mongoIdRangeRepository;
         this.rangeSize = rangeSize;
     }

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -28,6 +29,9 @@ public class UrlControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private MongoUrlRepository mongoUrlRepository;
+
+    @Value("${HOST}")
+    private String HOST;
 
     @After
     public void tearDown() {
@@ -52,7 +56,7 @@ public class UrlControllerTests {
             .andReturn();
 
         String body = result.getResponse().getContentAsString();
-        Assert.assertEquals(body, "http://localhost:8080/a");
+        Assert.assertEquals(body, HOST + "/a");
 
         result = this.mockMvc.perform(
                 post("/api/v1/shorten")
@@ -62,7 +66,7 @@ public class UrlControllerTests {
                 .andReturn();
 
         body = result.getResponse().getContentAsString();
-        Assert.assertEquals(body, "http://localhost:8080/b");
+        Assert.assertEquals(body, HOST + "/b");
     }
 
     @Test

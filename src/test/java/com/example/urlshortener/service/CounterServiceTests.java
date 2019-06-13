@@ -16,7 +16,7 @@ import java.lang.reflect.Field;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CounterServiceTests {
-    @Value("${rangeSize}")
+    @Value("${RANGE_SIZE}")
     private int rangeSize;
 
     @Autowired
