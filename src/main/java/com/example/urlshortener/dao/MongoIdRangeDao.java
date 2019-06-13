@@ -4,6 +4,8 @@ import com.example.urlshortener.model.IdRange;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.util.concurrent.TimeUnit;
+
 @Repository("MongoIdRangeDao")
 public class MongoIdRangeDao implements IdRangeDao {
 
@@ -18,7 +20,11 @@ public class MongoIdRangeDao implements IdRangeDao {
     @Override
     public IdRange getIdRange() {
         IdRange idRange;
-        int retries = 1000;
+
+        // If 2 or more instances of the service are trying to reserve ID blocks in tandem 1 will succeed and the rest
+        // will fail, retrying after 1 second should give enough time for the DB to become available again. If the
+        // insert is still failing after 30 seconds then there is likely an issue.
+        int retries = 30;
         while (retries > 0) {
             retries--;
             try {
@@ -33,6 +39,7 @@ public class MongoIdRangeDao implements IdRangeDao {
                 return idRange;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                try { TimeUnit.SECONDS.sleep(1); } catch (InterruptedException ex) { ex.printStackTrace(); }
             }
         }
         return null;
