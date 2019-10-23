@@ -13,6 +13,11 @@ pipeline {
             }
         }
         stage('Test') {
+            agent {
+                docker {
+                    image 'openjdk:13-jdk-alpine'
+                }
+            }
             steps {
                 unstash 'targetfiles'
                 sh 'mvn test'
