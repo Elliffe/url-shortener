@@ -8,13 +8,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
-                stash name: 'jar', includes: 'target'
+                sh 'mvnw -B -DskipTests clean package'
+                stash name: 'war', includes: 'target'
             }
         }
         stage('Test') {
             steps {
-                unstash 'jar'
+                unstash 'war'
                 sh 'mvn test'
             }
             post {
