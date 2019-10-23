@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                unstash: 'jar'
+                unstash 'jar'
                 sh 'mvn test'
             }
             post {
