@@ -1,12 +1,13 @@
 pipeline {
-    agent {
-        dockerfile true
-    }
+    agent none
     options {
         skipStagesAfterUnstable()
     }
     stages {
         stage('Build') {
+            agent {
+                dockerfile true
+            }
             steps {
                 sh 'mvn -B -DskipTests clean package'
                 stash includes: 'target/*.jar', name: 'targetfiles'
